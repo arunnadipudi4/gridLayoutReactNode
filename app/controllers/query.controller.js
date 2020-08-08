@@ -1,23 +1,27 @@
+
 const db = require("../models");
 const Query = db.query;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-    if (!req.body.appname && !req.body.sqlquery) {
+    if (!req.body.APPNAME && !req.body.SQLQUERY) {
         res.status(400).send({
-          message: "appname and sqlquery is mandatory"
+          message: "APPNAME and SQLQUERY is mandatory"
         });
         return;
       }
     
       const query = {
-        appname: req.body.appname,
-        sqlquery: req.body.sqlquery,
+        APPNAME: req.body.APPNAME,
+        SQLQUERY: req.body.SQLQUERY,
       };
     
       // Save Query in the database
       Query.create(query)
         .then(data => {
+          // db.sequelize.query('SELECT * FROM Configs').then(function(projects){
+          //   res.send(projects);
+          //           })
           res.send(data);
         })
         .catch(err => {
@@ -29,13 +33,23 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all Query from the database.
-exports.findAll = (req, res) => {
-  const appname = req.query.appname;
-  var condition = appname ? { appname: { [Op.like]: `%${appname}%` } } : null;
+  exports.findAll = (req, res) => {
+  const APPNAME = req.query.APPNAME;
+  var condition = APPNAME ? { APPNAME: { [Op.like]: `%${APPNAME}%` } } : null;
 
   Query.findAll({ where: condition })
-    .then(data => {
-      res.send(data);
+    .then( data => {
+      const response = []
+      data.forEach((record) => {
+        const query = record.dataValues && record.dataValues.SQLQUERY;
+        db.sequelize.query(query).then((project) => {
+          response.push(project);
+          if(response.length === data.length) {
+            res.send(response)
+          }
+        })
+      })
+    
     })
     .catch(err => {
       res.status(500).send({
@@ -45,11 +59,12 @@ exports.findAll = (req, res) => {
     });
 };
 
+
 // Find a single Query with an id
 exports.findOne = (req, res) => {
-  const id = req.params.id;
+  const ID = req.params.id;
 
-  Query.findByPk(id)
+  Query.findByPk(ID)
     .then(data => {
       res.send(data);
     })
@@ -65,7 +80,7 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   Query.update(req.body, {
-    where: { id: id }
+    where: { ID: id }
   })
     .then(num => {
       if (num == 1) {
@@ -90,7 +105,7 @@ exports.delete = (req, res) => {
   const id = req.params.id;
 
   Query.destroy({
-    where: { id: id }
+    where: { ID: id }
   })
     .then(num => {
       if (num == 1) {

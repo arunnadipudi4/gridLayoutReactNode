@@ -9,6 +9,7 @@ module.exports = app => {
     // Retrieve all query
     router.get("/", query.findAll);
 
+
     // Retrieve a single Query with id
     router.get("/:id", query.findOne);
   

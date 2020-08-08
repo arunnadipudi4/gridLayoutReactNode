@@ -19,6 +19,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.query = require("./query.model.js")(sequelize, Sequelize);
+// db.query = require("./randomquery.model.js")(sequelize, Sequelize);
 
 module.exports = db;
 
