@@ -31,10 +31,26 @@ exports.create = (req, res) => {
           });
         });
 };
+exports.findAll = (req, res) => {
+  const where = req.query.where;
+  const orderBy = req.query.orderBy;
+  console.log(orderBy, orderBy.split('-')[1], orderBy.split('-')[0])
+  Query.findAll({ order: orderBy ? [[orderBy.split('-')[1], orderBy.split('-')[0]]] : [], where: where ? where : '' })
+    .then( data => {
+      res.send(data)
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving queries."
+      });
+    });
+};
 
 // Retrieve all Query from the database.
-  exports.findAll = (req, res) => {
+  exports.findAllByAppname = (req, res) => {
   const APPNAME = req.query.APPNAME;
+  if (!APPNAME) res.send('APPNAME is needed')
   var condition = APPNAME ? { APPNAME: { [Op.like]: `%${APPNAME}%` } } : null;
 
   Query.findAll({ where: condition })

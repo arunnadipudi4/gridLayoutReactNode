@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import SearchBar from "../Presentation/SearchBar";
 import DataGrid from "../Presentation/DataGrid";
 import HelpComponent from "../Presentation/HelpComponent";
-import { userData, searchData } from "../../utils";
+import {  searchData } from "../../utils";
+import { getData } from "../../Services";
 
 class SearchContainer extends Component {
   constructor() {
@@ -11,49 +12,55 @@ class SearchContainer extends Component {
     this.filterData = this.filterData.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
     this.updateQueryText = this.updateQueryText.bind(this);
-    this.openHelpComponent = this.openHelpComponent.bind(this);
     this.state = {
       sortOrder: {
-        ID: "ASC",
-        "First Name": "ASC",
-        "Last Name": "ASC",
-        Email: "ASC",
-        Gender: "ASC",
-        Age: "ASC",
-        Date: "ASC",
-        IP: "ASC"
+        ID: "asc",
+        "App Name": "asc",
+        "Sql Query": "asc",
+        "Created By": "asc",
+        "Updated By": "asc",
+        "Created Date": "asc",
+        "Updated Date": "asc",
+        "Created At": "asc",
+        "Updated At": "asc"
       },
       sortBy: "ID",
-      intialData: userData,
-      filteredData: userData,
+      intialData: [],
+      filteredData: [],
       filters: [],
       selectedFilter: "",
       showHelpComponent: false
     };
     this.tableHeaders = [
       "ID",
-      "First Name",
-      "Last Name",
-      "Email",
-      "Gender",
-      "Age",
-      "Date",
-      "IP"
+      "App Name",
+      "Sql Query",
+      "Created By",
+      "Updated By",
+      "Created Date",
+      "Updated Date",
+      "Created At",
+      "Updated At"
     ];
+    this.headersToParamMap = {
+      "ID": "ID",
+      "App Name": "APPNAME",
+      "Sql Query": "SQLQUERY",
+      "Created By": "CREATEDBY",
+      "Updated By": "UPDATEDBY",
+      "Created Date": "CREATEDDATE",
+      "Updated Date": "UPDATEDDATE",
+      "Created At": "CREATEDAT",
+      "Updated At": "UPDATEDAT"
+
+    }
   }
   componentDidMount() {
-    const userData = this.state.filteredData;
-    const dataKeys = Object.keys(userData[0]);
-    this.setState({
-      filters: ["Select Filter", ...dataKeys, "Date", "IP"].filter(key => {
-        return key !== "logins";
-      }),
-      selectedFilter: "Select Filter"
-    });
+    getData('/api/query?orderBy=asc-id').then((response) => {
+      this.setState({filteredData: response})
+    })
   }
-  openHelpComponent() {
-    this.setState({ showHelpComponent: !this.state.showHelpComponent });
-  }
+  
   filterData() {
     const selectedFilter = this.state.selectedFilter;
     const sortBy = this.state.sortBy;
@@ -91,18 +98,19 @@ class SearchContainer extends Component {
   sortData(key) {
     const getSortOrder = key => {
       const sortOrder = Object.assign(this.state.sortOrder, {});
-      sortOrder[key] = sortOrder[key] === "ASC" ? "DESC" : "ASC";
+      sortOrder[key] = sortOrder[key] === "asc" ? "desc" : "asc";
       return sortOrder;
     };
-    this.setState(
-      {
-        sortBy: key,
-        sortOrder: getSortOrder(key)
-      },
+  
+    const sortOrder = getSortOrder(key)
+    this.setState({sortOrder}, 
       () => {
-        this.filterData();
+        getData(`/api/query?orderBy=${sortOrder[key]}-${this.headersToParamMap[key]}`).then((response) => {
+          this.setState({filteredData: response})
+        })
       }
-    );
+      )
+   
   }
   render() {
     return (
@@ -113,7 +121,6 @@ class SearchContainer extends Component {
             selectedFilter={this.state.selectedFilter}
             onFilterChange={this.onFilterChange}
             updateQueryText={this.updateQueryText}
-            openHelpComponent={this.openHelpComponent}
           />
         </div>
         <DataGrid
@@ -123,74 +130,11 @@ class SearchContainer extends Component {
           sortBy={this.state.sortBy}
           sortData={this.sortData}
         />
-        <HelpComponent
-          showHelpComponent={this.state.showHelpComponent}
-          openHelpComponent={this.openHelpComponent}
-          heading={"USAGE"}
-          renderProps={<HelpComponentBody />}
-        />
       </div>
     );
   }
 }
 
-function HelpComponentBody() {
-  // id: ["$like", "$gt", "$lt", "$in", "$range"],
-  // first_name: ["$like", "$in"],
-  // last_name: ["$like", "$in"],
-  // email: ["$like", "$in"],
-  // gender: ["$like", "$in"],
-  // age: ["$like", "$gt", "$lt", "$in", "$range"],
-  // Date: ["$like"],
-  // IP: ["$like"]
-  return (
-    <div>
-      <p class="font-weight-bolder">
-        {
-          "The Data Can be filtered based on all available fields. Certain operations can also be performed based on the selected filter e.g, >,<"
-        }
-      </p>
-      <p class="text-monospace">
-        {
-          "List of available operations for each filter NOTE: all the operations are mapped to below operators ($gt : >) ($lt : <) ($in : ,) ($range : -)"
-        }
-      </p>
-      <div className={"container border bg-light"}>
-        <div className={"row"}>
-          <div className={"col-4"}>'ID'</div>
-          <div className={"col-8"}>"$like", "$gt", "$lt", "$in", "$range"</div>
-        </div>
-        <div className={"row"}>
-          <div className={"col-4"}>'First Name'</div>
-          <div className={"col-8"}>"$like", "$in"</div>
-        </div>
-        <div className={"row"}>
-          <div className={"col-4"}>'Last Name'</div>
-          <div className={"col-8"}>"$like", "$in"</div>
-        </div>
-        <div className={"row"}>
-          <div className={"col-4"}>'email'</div>
-          <div className={"col-8"}>"$like", "$in"</div>
-        </div>
-        <div className={"row"}>
-          <div className={"col-4"}>'age'</div>
-          <div className={"col-8"}>"$like", "$gt", "$lt", "$in", "$range"</div>
-        </div>
-        <div className={"row"}>
-          <div className={"col-4"}>'gender'</div>
-          <div className={"col-8"}>"$like", "$in"</div>
-        </div>
-        <div className={"row"}>
-          <div className={"col-4"}>'Date'</div>
-          <div className={"col-8"}>"$like"</div>
-        </div>
-        <div className={"row"}>
-          <div className={"col-4"}>'IP'</div>
-          <div className={"col-8"}>"$like"</div>
-        </div>
-      </div>
-    </div>
-  );
-}
+
 
 export default SearchContainer;

@@ -12,17 +12,15 @@ const DataGrid = props =>
             return (
               <th
                 onClick={(e, d) => {
-                  if (header !== "Date" && header !== "IP") {
                     props.sortData(header);
-                  }
                 }}
               >
                 {header}
-                {header !== "Date" && header !== "IP" && (
+                {(
                   <span className={"pl-3"}>
                     <FontAwesomeIcon
                       icon={
-                        props.sortOrder[header] === "ASC"
+                        props.sortOrder[header] === "asc"
                           ? faSortUp
                           : faSortDown
                       }
@@ -39,41 +37,14 @@ const DataGrid = props =>
           return (
             <tr>
               <td>{item.id}</td>
-              <td>{item.first_name}</td>
-              <td>{item.last_name}</td>
-              <td>{item.email}</td>
-              <td>{item.gender}</td>
-              <td>{item.age}</td>
-              <td>
-                {item.logins.map(l => {
-                  return (
-                    <div
-                      style={{
-                        backgroundColor: "#7f7fff",
-                        padding: 5,
-                        margin: 3
-                      }}
-                    >
-                      {l.date}
-                    </div>
-                  );
-                })}
-              </td>
-              <td>
-                {item.logins.map(l => {
-                  return (
-                    <div
-                      style={{
-                        backgroundColor: "#7f7fff",
-                        padding: 5,
-                        margin: 3
-                      }}
-                    >
-                      {l.ip}
-                    </div>
-                  );
-                })}
-              </td>
+              <td>{item.APPNAME}</td>
+              <td>{item.SQLQUERY}</td>
+              <td>{item.CREATEDBY}</td>
+              <td>{item.UPDATEDBY}</td>
+              <td>{item.CREATEDDATE}</td>
+              <td>{item.UPDATEDDATE}</td>
+              <td>{item.createdAt}</td>
+              <td>{item.updatedAt}</td>
             </tr>
           );
         })}

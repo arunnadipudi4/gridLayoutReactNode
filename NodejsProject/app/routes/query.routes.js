@@ -6,8 +6,11 @@ module.exports = app => {
     // Create a new Query
     router.post("/", query.create);
   
-    // Retrieve all query
     router.get("/", query.findAll);
+
+    // Retrieve all query by appname
+    router.get("/appname", query.findAllByAppname);
+
 
 
     // Retrieve a single Query with id
