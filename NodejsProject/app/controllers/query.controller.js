@@ -32,10 +32,10 @@ exports.create = (req, res) => {
         });
 };
 exports.findAll = (req, res) => {
-  const where = req.query.where;
   const orderBy = req.query.orderBy;
-  console.log(orderBy, orderBy.split('-')[1], orderBy.split('-')[0])
-  Query.findAll({ order: orderBy ? [[orderBy.split('-')[1], orderBy.split('-')[0]]] : [], where: where ? where : '' })
+  const APPNAME = req.query.APPNAME;
+  var condition = APPNAME ? { APPNAME: { [Op.like]: `%${APPNAME}%` } } : null;
+  Query.findAll({ where: condition, order: orderBy ? [[orderBy.split('-')[1], orderBy.split('-')[0]]] : [] })
     .then( data => {
       res.send(data)
     })
@@ -46,7 +46,6 @@ exports.findAll = (req, res) => {
       });
     });
 };
-
 // Retrieve all Query from the database.
   exports.findAllByAppname = (req, res) => {
   const APPNAME = req.query.APPNAME;

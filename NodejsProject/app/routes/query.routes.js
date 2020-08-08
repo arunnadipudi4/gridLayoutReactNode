@@ -11,6 +11,7 @@ module.exports = app => {
     // Retrieve all query by appname
     router.get("/appname", query.findAllByAppname);
 
+    router.get("/filterBy", query.findAllByAppname);
 
 
     // Retrieve a single Query with id

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import SearchBar from "../Presentation/SearchBar";
 import DataGrid from "../Presentation/DataGrid";
-import HelpComponent from "../Presentation/HelpComponent";
 import {  searchData } from "../../utils";
 import { getData } from "../../Services";
 
@@ -9,8 +8,7 @@ class SearchContainer extends Component {
   constructor() {
     super();
     this.sortData = this.sortData.bind(this);
-    this.filterData = this.filterData.bind(this);
-    this.onFilterChange = this.onFilterChange.bind(this);
+    this.filterByAppName = this.filterByAppName.bind(this);
     this.updateQueryText = this.updateQueryText.bind(this);
     this.state = {
       sortOrder: {
@@ -27,9 +25,6 @@ class SearchContainer extends Component {
       sortBy: "ID",
       intialData: [],
       filteredData: [],
-      filters: [],
-      selectedFilter: "",
-      showHelpComponent: false
     };
     this.tableHeaders = [
       "ID",
@@ -61,40 +56,22 @@ class SearchContainer extends Component {
     })
   }
   
-  filterData() {
-    const selectedFilter = this.state.selectedFilter;
-    const sortBy = this.state.sortBy;
-    const sortKey = this.state.sortOrder[sortBy];
+  filterByAppName() {
     const queryText = this.state.queryText;
-    const intialData = this.state.intialData;
-    const searchDataResult = searchData(
-      intialData,
-      selectedFilter,
-      queryText,
-      sortKey,
-      sortBy
-    );
-    this.setState({ filteredData: searchDataResult });
+    getData(`/api/query?APPNAME=${queryText}&orderBy=asc-ID`).then((response) => {
+      this.setState({filteredData: response})
+    })
   }
   updateQueryText(text, key) {
     if (key === "Enter") {
-      this.filterData();
+      this.filterByAppName();
     } else {
       this.setState({
         queryText: text
       });
     }
   }
-  onFilterChange(key) {
-    this.setState(
-      {
-        selectedFilter: key
-      },
-      () => {
-        this.filterData();
-      }
-    );
-  }
+ 
   sortData(key) {
     const getSortOrder = key => {
       const sortOrder = Object.assign(this.state.sortOrder, {});
@@ -117,10 +94,8 @@ class SearchContainer extends Component {
       <div>
         <div class="d-flex justify-content-center mt-5">
           <SearchBar
-            filters={this.state.filters}
-            selectedFilter={this.state.selectedFilter}
-            onFilterChange={this.onFilterChange}
             updateQueryText={this.updateQueryText}
+            filterByAppName={this.filterByAppName}
           />
         </div>
         <DataGrid
