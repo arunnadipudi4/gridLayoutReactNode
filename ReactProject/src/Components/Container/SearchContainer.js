@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import SearchBar from "../Presentation/SearchBar";
 import DataGrid from "../Presentation/DataGrid";
-import {  searchData } from "../../utils";
 import { getData } from "../../Services";
 
 class SearchContainer extends Component {

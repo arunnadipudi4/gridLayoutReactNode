@@ -4,9 +4,6 @@ import {
   FormControl,
   Button
 } from "react-bootstrap";
-import { filterKeyToName } from "../../utils";
-import { faQuestion } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SearchBar = props => (
   <InputGroup className="w-75">

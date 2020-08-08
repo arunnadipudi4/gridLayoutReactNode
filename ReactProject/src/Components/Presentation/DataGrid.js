@@ -2,7 +2,11 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
+import moment from 'moment';
 
+const getDate = (date) => {
+  return date ? moment(date).format('MM-DD-YYYY') : ''
+}
 const DataGrid = props =>
   props.userData && props.userData.length ? (
     <Table responsive variant="dark" striped bordered hover className={"mt-5"}>
@@ -41,10 +45,10 @@ const DataGrid = props =>
               <td>{item.SQLQUERY}</td>
               <td>{item.CREATEDBY}</td>
               <td>{item.UPDATEDBY}</td>
-              <td>{item.CREATEDDATE}</td>
-              <td>{item.UPDATEDDATE}</td>
-              <td>{item.createdAt}</td>
-              <td>{item.updatedAt}</td>
+              <td>{getDate(item.CREATEDDATE)}</td>
+              <td>{getDate(item.UPDATEDDATE)}</td>
+              <td>{getDate(item.createdAt)}</td>
+              <td>{getDate(item.updatedAt)}</td>
             </tr>
           );
         })}
