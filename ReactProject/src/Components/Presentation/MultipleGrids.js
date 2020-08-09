@@ -14,7 +14,7 @@ const MultipleGrids = (props) => {
                                 {
                                     Object.keys(singleGridData[0]).map((d) => {
                                         return <th 
-                                        style={{ border: "1px solid yellow", maxHeight: '10px', padding: '5px', 'fontSize': '14px'}}
+                                        style={{ maxHeight: '10px', padding: '5px', 'fontSize': '14px'}}
                                        >{d}</th>
                                     })
                                 }
@@ -29,7 +29,7 @@ const MultipleGrids = (props) => {
                                             {
                                                 Object.values(data).map((d) => {
                                                     return <td
-                                                    style={{ border: "1px solid yellow" }}
+                                                    style={{ }}
                                                    >{d}</td>
                                                 })
                                             }

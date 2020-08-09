@@ -9,12 +9,16 @@ a:hover {
   text-decoration: none;
 }
 .nav-link:hover {
-  background: yellow;
+  background: #fbce07;
 }
  .btn-primary {
-  background: yellow !important;
+  background: #fbce07 !important;
   color: black !important;
   border: none !important;
   text-decoration: none !important; 
   font-size: 12px !important;
+}
+
+.tableHeader{
+  border-bottom: 5px solid #fbce07;
 }

@@ -27,12 +27,14 @@ const DataGrid = props =>
   props.userData && props.userData.length ? (
     <Table id={'gridTable'} responsive striped hover className={"mt-2"} >
       <thead>
-        <tr>
+        <tr
+          className={'tableHeader'}
+        >
+
           {props.tableHeaders.map(header => {
             return (
               <th
-                style={{ border: "1px solid yellow", maxHeight: '10px', padding: '5px', 'fontSize': '14px'}}
-                className={getClassNameForHeader(header)}
+                style={{ maxHeight: '10px', padding: '7px', 'fontSize': '14px' }}
                 onClick={(e, d) => {
                   props.sortData(header);
                 }}
@@ -54,20 +56,20 @@ const DataGrid = props =>
           })}
         </tr>
       </thead>
-      <tbody style={{'fontSize': '12px'}}>
+      <tbody style={{ 'fontSize': '12px' }}>
         {props.userData.map(item => {
           return (
             <tr>
-              <td style={{ border: "1px solid yellow" }}>{item.id}</td>
-              <td style={{ border: "1px solid yellow" }}>{item.APPNAME}</td>
-              <td style={{ border: "1px solid yellow" }}>{item.SQLQUERY}</td>
-              <td style={{ border: "1px solid yellow" }}>{item.CREATEDBY}</td>
-              <td style={{ border: "1px solid yellow" }}>{item.UPDATEDBY}</td>
-              <td style={{ border: "1px solid yellow" }}>{getDate(item.CREATEDDATE)}</td>
-              <td style={{ border: "1px solid yellow" }}>{getDate(item.UPDATEDDATE)}</td>
-              <td style={{ border: "1px solid yellow" }}>{getDate(item.createdAt)}</td>
-              <td style={{ border: "1px solid yellow" }}>{getDate(item.updatedAt)}</td>
-              <td style={{ border: "1px solid yellow" }}> <InputGroup.Radio
+              <td style={{}}>{item.id}</td>
+              <td style={{}}>{item.APPNAME}</td>
+              <td style={{}}>{item.SQLQUERY}</td>
+              <td style={{}}>{item.CREATEDBY}</td>
+              <td style={{}}>{item.UPDATEDBY}</td>
+              <td style={{}}>{getDate(item.CREATEDDATE)}</td>
+              <td style={{}}>{getDate(item.UPDATEDDATE)}</td>
+              <td style={{}}>{getDate(item.createdAt)}</td>
+              <td style={{}}>{getDate(item.updatedAt)}</td>
+              <td style={{}}> <InputGroup.Radio
                 variant="dark"
                 aria-label="Radio button for following text input"
                 checked={props.selectedItem && props.selectedItem.id === item.id}

@@ -177,7 +177,7 @@ class SearchContainer extends Component {
               onClick={() => this.openAddRowModal()}
               style={{
                 'borderRadius': 0,
-                'background': 'yellow',
+                'background': '#fbce07',
                 'border': 'none',
                 'color': 'black',
                 'fontSize': '12px',
@@ -195,7 +195,7 @@ class SearchContainer extends Component {
               onClick={() => this.filterByAppName()}
               style={{
                 'borderRadius': 0,
-                'background': 'yellow',
+                'background': '#fbce07',
                 'border': 'none',
                 'color': 'black',
                 'fontSize': '12px',
@@ -211,7 +211,7 @@ class SearchContainer extends Component {
               onClick={() => this.filterByAppName()}
               style={{
                 'borderRadius': 0,
-                'background': 'yellow',
+                'background': '#fbce07',
                 'border': 'none',
                 'color': 'black',
                 'fontSize': '12px',
@@ -227,7 +227,7 @@ class SearchContainer extends Component {
               onClick={() => this.deleteSelectedRow()}
               style={{
                 'borderRadius': 0,
-                'background': 'yellow',
+                'background': '#fbce07',
                 'border': 'none',
                 'color': 'black',
                 'fontSize': '12px',
