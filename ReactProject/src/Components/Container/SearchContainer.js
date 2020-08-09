@@ -21,7 +21,7 @@ class SearchContainer extends Component {
       sortOrder: {
         ID: "asc",
         "App Name": "asc",
-        "Sql Query": "asc",
+        "SQL Query": "asc",
         "Created By": "asc",
         "Updated By": "asc",
         "Created Date": "asc",
@@ -44,18 +44,19 @@ class SearchContainer extends Component {
     this.tableHeaders = [
       "ID",
       "App Name",
-      "Sql Query",
+      "SQL Query",
       "Created By",
       "Updated By",
       "Created Date",
       "Updated Date",
       "Created At",
-      "Updated At"
+      "Updated At",
+      "select"
     ];
     this.headersToParamMap = {
       "ID": "ID",
       "App Name": "APPNAME",
-      "Sql Query": "SQLQUERY",
+      "SQL Query": "SQLQUERY",
       "Created By": "CREATEDBY",
       "Updated By": "UPDATEDBY",
       "Created Date": "CREATEDDATE",
@@ -128,7 +129,7 @@ class SearchContainer extends Component {
     postData('/api/query', paramObj).then((response) => {
       getData('/api/query?orderBy=asc-id').then((res) => {
         this.setState({ filteredData: res }, () => {
-          this.setState({inputRowData: {}, show: false})
+          this.setState({ inputRowData: {}, show: false })
         })
       })
     })
@@ -138,14 +139,14 @@ class SearchContainer extends Component {
     const selectedItem = filteredData.find((item) => {
       return item.id === id;
     });
-    if(selectedItem) {
-      this.setState({selectedItem})
+    if (selectedItem) {
+      this.setState({ selectedItem })
     } else alert('no item found')
 
   }
   deleteSelectedRow() {
     const selectedItem = this.state.selectedItem;
-    if(selectedItem) {
+    if (selectedItem) {
       const id = selectedItem.id;
       deleteData(`/api/query/${id}`).then((response) => {
         getData('/api/query?orderBy=asc-id').then((res) => {
@@ -160,21 +161,31 @@ class SearchContainer extends Component {
     return (
       <div>
 
-        <Container>
+        <Container className={'container-fluid'}>
           <Row className={'d-flex justify-content-center m-2'}>
             <SearchBar
               updateQueryText={this.updateQueryText}
               filterByAppName={this.filterByAppName}
             />
           </Row>
-          <Row className={'d-flex justify-content-start'}>
+          <Row className={'d-flex justify-content-center'}>
 
             <Button
               className={'mr-1'}
               title={'Add a Row'}
               variant={"primary"}
               onClick={() => this.openAddRowModal()}
+              style={{
+                'borderRadius': 0,
+                'background': 'yellow',
+                'border': 'none',
+                'color': 'black',
+                'fontSize': '12px',
+                'width': '150px',
+                'padding': '10px'
+              }}
             > {'Add a Row'}
+
             </Button>
 
             <Button
@@ -182,6 +193,15 @@ class SearchContainer extends Component {
               title={'Delete Table'}
               variant={"primary"}
               onClick={() => this.filterByAppName()}
+              style={{
+                'borderRadius': 0,
+                'background': 'yellow',
+                'border': 'none',
+                'color': 'black',
+                'fontSize': '12px',
+                'width': '150px',
+                'padding': '10px'
+              }}
             > {'Delete Table'}
             </Button>
             <Button
@@ -189,6 +209,15 @@ class SearchContainer extends Component {
               title={'Edit Selected Row'}
               variant={"primary"}
               onClick={() => this.filterByAppName()}
+              style={{
+                'borderRadius': 0,
+                'background': 'yellow',
+                'border': 'none',
+                'color': 'black',
+                'fontSize': '12px',
+                'width': '150px',
+                'padding': '10px'
+              }}
             > {'Edit Selected Row'}
             </Button>
             <Button
@@ -196,11 +225,21 @@ class SearchContainer extends Component {
               title={'Delete Selected Row'}
               variant={"primary"}
               onClick={() => this.deleteSelectedRow()}
+              style={{
+                'borderRadius': 0,
+                'background': 'yellow',
+                'border': 'none',
+                'color': 'black',
+                'fontSize': '12px',
+                'width': '150px',
+                'padding': '10px'
+              }}
             > {'Delete Selected Row'}
             </Button>
           </Row>
-          <Row>
-            <DataGrid
+
+        </Container>
+        <DataGrid
               tableHeaders={this.tableHeaders}
               userData={this.state.filteredData}
               sortOrder={this.state.sortOrder}
@@ -209,8 +248,6 @@ class SearchContainer extends Component {
               selectRowItem={this.selectRowItem}
               selectedItem={this.state.selectedItem}
             />
-          </Row>
-        </Container>
         <AddRow
           show={this.state.show}
           handleClose={this.handleClose}

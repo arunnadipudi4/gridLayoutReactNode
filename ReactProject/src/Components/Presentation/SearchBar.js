@@ -6,7 +6,7 @@ import {
 } from "react-bootstrap";
 
 const SearchBar = props => (
-  <InputGroup className="w-75">
+  <InputGroup className="w-50">
     <FormControl
       placeholder="Search By App name"
       value={props.queryText}
@@ -17,6 +17,7 @@ const SearchBar = props => (
         title={'Search'}
         variant={"primary"}
         onClick={() => props.filterByAppName()}
+        // style={{backgroundColor: 'yellow'}}
       > {'Search'}
       </Button>
     </InputGroup.Append>

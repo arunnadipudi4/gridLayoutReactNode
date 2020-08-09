@@ -8,15 +8,15 @@ import {
 import { Nav, Navbar } from 'react-bootstrap';
 import SearchContainer from "./Container/SearchContainer";
 import MultipleGridsContainer from "./Container/MultipleGridsContainer";
-
+import '../styles.css';
 export default function basicRouter(props) {
     return (
         <Router>
-            <Navbar bg="primary" variant="dark">
-                <Navbar.Brand href="#home">Grid View NavBar</Navbar.Brand>
+            <Navbar className={'navBar'} variant="dark">
+                <Navbar.Brand href="#home"></Navbar.Brand>
                 <Nav className="mr-auto">
-                    <Nav.Link><Link style={{color:"black"}} to="/">Grid View</Link></Nav.Link>
-                    <Nav.Link><Link style={{color:"black"}} to="/multiplegrids">Multiple Grids</Link></Nav.Link>
+                    <Nav.Link><Link style={{color:"black"}} to="/">Home</Link></Nav.Link>
+                    <Nav.Link><Link style={{color:"black"}} to="/multiplegrids">Configuration</Link></Nav.Link>
                 </Nav>
             </Navbar>
             <div>

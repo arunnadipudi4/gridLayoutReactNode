@@ -2,3 +2,19 @@
   font-family: sans-serif;
   text-align: center;
 }
+.navBar {
+  background-color: white;
+}
+a:hover {
+  text-decoration: none;
+}
+.nav-link:hover {
+  background: yellow;
+}
+ .btn-primary {
+  background: yellow !important;
+  color: black !important;
+  border: none !important;
+  text-decoration: none !important; 
+  font-size: 12px !important;
+}
