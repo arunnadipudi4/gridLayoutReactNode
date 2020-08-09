@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Button, Container, Row, Col } from 'react-bootstrap';
+import { Button, Container, Row } from 'react-bootstrap';
 import SearchBar from "../Presentation/SearchBar";
 import DataGrid from "../Presentation/DataGrid";
-import { getData } from "../../Services";
+import { getData, postData } from "../../Services";
+import AddRow from '../Presentation/AddRow';
 
 class SearchContainer extends Component {
   constructor() {
@@ -10,6 +11,10 @@ class SearchContainer extends Component {
     this.sortData = this.sortData.bind(this);
     this.filterByAppName = this.filterByAppName.bind(this);
     this.updateQueryText = this.updateQueryText.bind(this);
+    this.openAddRowModal = this.openAddRowModal.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.updateInputText = this.updateInputText.bind(this);
+    this.handleSaveChanges = this.handleSaveChanges.bind(this);
     this.state = {
       sortOrder: {
         ID: "asc",
@@ -25,6 +30,13 @@ class SearchContainer extends Component {
       sortBy: "ID",
       intialData: [],
       filteredData: [],
+      show: false,
+      inputRowData: {
+        'APPNAME': '',
+        'SQLQUERY': '',
+        'CREATEDBY': '',
+        'UPDATEDBY': ''
+      }
     };
     this.tableHeaders = [
       "ID",
@@ -89,6 +101,35 @@ class SearchContainer extends Component {
     )
 
   }
+
+  openAddRowModal() {
+    this.setState({ show: true })
+  }
+  handleClose() {
+    this.setState({ show: false })
+  }
+  updateInputText(value, id) {
+    const inputRowData = this.state.inputRowData;
+    inputRowData[id] = value;
+    this.setState({ inputRowData });
+  }
+  handleSaveChanges() {
+    const inputRowData = this.state.inputRowData;
+    const paramObj = {
+      "APPNAME": inputRowData.APPNAME,
+      "SQLQUERY": inputRowData.SQLQUERY,
+      "UPDATEDDATE": "",
+      "CREATEDBY": inputRowData.CREATEDBY,
+      "UPDATEDBY": inputRowData.UPDATEDBY
+    }
+    postData('/api/query', paramObj).then((response) => {
+      getData('/api/query?orderBy=asc-id').then((res) => {
+        this.setState({ filteredData: res }, () => {
+          this.setState({inputRowData: {}, show: false})
+        })
+      })
+    })
+  }
   render() {
     return (
       <div>
@@ -106,7 +147,7 @@ class SearchContainer extends Component {
               className={'mr-1'}
               title={'Add a Row'}
               variant={"primary"}
-              onClick={() => this.filterByAppName()}
+              onClick={() => this.openAddRowModal()}
             > {'Add a Row'}
             </Button>
 
@@ -142,7 +183,13 @@ class SearchContainer extends Component {
             />
           </Row>
         </Container>
-
+        <AddRow
+          show={this.state.show}
+          handleClose={this.handleClose}
+          handleSaveChanges={this.handleSaveChanges}
+          updateInputText={this.updateInputText}
+          inputRowData={this.state.inputRowData}
+        />
 
       </div>
     );
