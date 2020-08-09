@@ -9,7 +9,7 @@ const getDate = (date) => {
 }
 const DataGrid = props =>
   props.userData && props.userData.length ? (
-    <Table responsive variant="dark" striped bordered hover className={"mt-5"}>
+    <Table responsive variant="dark" striped bordered hover className={"mt-2"}>
       <thead>
         <tr>
           {props.tableHeaders.map(header => {
