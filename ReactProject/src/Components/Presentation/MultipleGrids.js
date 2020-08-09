@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 const MultipleGrids = (props) => {
     const { multiplegridsdata } = props;
@@ -8,32 +8,35 @@ const MultipleGrids = (props) => {
             {
                 multiplegridsdata && multiplegridsdata.map((singleGrid) => {
                     const singleGridData = singleGrid[0];
-
-
-
-                    return singleGridData && singleGridData.map((data, i) => {
-                        return <Container >
-                            {
-                                i === 0 && <Row>
-                                    {
-                                        Object.keys(data).map((d) => {
-                                            return <Col  className={"border border-primary"}>{d}</Col>
-                                        })
-                                    }
-                                </Row>
-                            }
-
-
-                            <Row>
+                    return <Table responsive variant="primary" striped bordered hover className={"mt-5"}>
+                        {
+                            <thead>
                                 {
-                                    Object.values(data).map((d) => {
-                                        return <Col  className={"border border-primary"}>{d}</Col>
+                                    Object.keys(singleGridData[0]).map((d) => {
+                                        return <th className={"border border-primary"}>{d}</th>
                                     })
                                 }
-                            </Row>
-                        </Container>
-                    })
+                            </thead>
+                        }
+
+                        <tbody>
+                            {
+                                singleGridData && singleGridData.map((data, i) => {
+                                    return (
+                                        <tr>
+                                            {
+                                                Object.values(data).map((d) => {
+                                                    return <td className={"border border-primary"}>{d}</td>
+                                                })
+                                            }
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </Table>
                 })
+
             }
 
         </div>
