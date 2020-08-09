@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Container, Row } from 'react-bootstrap';
 import SearchBar from "../Presentation/SearchBar";
 import DataGrid from "../Presentation/DataGrid";
-import { getData, postData } from "../../Services";
+import { getData, postData, deleteData } from "../../Services";
 import AddRow from '../Presentation/AddRow';
 
 class SearchContainer extends Component {
@@ -15,6 +15,8 @@ class SearchContainer extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.updateInputText = this.updateInputText.bind(this);
     this.handleSaveChanges = this.handleSaveChanges.bind(this);
+    this.selectRowItem = this.selectRowItem.bind(this);
+    this.deleteSelectedRow = this.deleteSelectedRow.bind(this);
     this.state = {
       sortOrder: {
         ID: "asc",
@@ -36,7 +38,8 @@ class SearchContainer extends Component {
         'SQLQUERY': '',
         'CREATEDBY': '',
         'UPDATEDBY': ''
-      }
+      },
+      selectedItem: null
     };
     this.tableHeaders = [
       "ID",
@@ -130,6 +133,29 @@ class SearchContainer extends Component {
       })
     })
   }
+  selectRowItem(id) {
+    const filteredData = this.state.filteredData;
+    const selectedItem = filteredData.find((item) => {
+      return item.id === id;
+    });
+    if(selectedItem) {
+      this.setState({selectedItem})
+    } else alert('no item found')
+
+  }
+  deleteSelectedRow() {
+    const selectedItem = this.state.selectedItem;
+    if(selectedItem) {
+      const id = selectedItem.id;
+      deleteData(`/api/query/${id}`).then((response) => {
+        getData('/api/query?orderBy=asc-id').then((res) => {
+          this.setState({ filteredData: res })
+        })
+      })
+    } else {
+      alert('no item found')
+    }
+  }
   render() {
     return (
       <div>
@@ -169,7 +195,7 @@ class SearchContainer extends Component {
               className={'mr-1'}
               title={'Delete Selected Row'}
               variant={"primary"}
-              onClick={() => this.filterByAppName()}
+              onClick={() => this.deleteSelectedRow()}
             > {'Delete Selected Row'}
             </Button>
           </Row>
@@ -180,6 +206,8 @@ class SearchContainer extends Component {
               sortOrder={this.state.sortOrder}
               sortBy={this.state.sortBy}
               sortData={this.sortData}
+              selectRowItem={this.selectRowItem}
+              selectedItem={this.state.selectedItem}
             />
           </Row>
         </Container>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import { Table, InputGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
 import moment from 'moment';
@@ -16,7 +16,7 @@ const DataGrid = props =>
             return (
               <th
                 onClick={(e, d) => {
-                    props.sortData(header);
+                  props.sortData(header);
                 }}
               >
                 {header}
@@ -49,13 +49,21 @@ const DataGrid = props =>
               <td>{getDate(item.UPDATEDDATE)}</td>
               <td>{getDate(item.createdAt)}</td>
               <td>{getDate(item.updatedAt)}</td>
+              <td> <InputGroup.Radio
+                variant="dark"
+                aria-label="Radio button for following text input"
+                checked={props.selectedItem && props.selectedItem.id === item.id}
+                onClick={() => {
+                  props.selectRowItem(item.id)
+                }}
+              /></td>
             </tr>
           );
         })}
       </tbody>
     </Table>
   ) : (
-    "No Records Found"
-  );
+      "No Records Found"
+    );
 
 export default DataGrid;
